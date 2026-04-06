@@ -92,6 +92,17 @@ namespace BankingSystem
                 return true;
             }
         }
+
+        public void DisplayAccountDetails()
+        {
+            Console.WriteLine($"\n*****************************************");
+            Console.WriteLine("============ ACCOUNT DETAILS ============");
+            Console.WriteLine($"Account Number: {accoNumber}");
+            Console.WriteLine($"Account Holder: {accoName}");
+            Console.WriteLine($"Account Type: {accoType}");
+            Console.WriteLine($"Current Balance: Php {balance:F2}");
+            Console.WriteLine($"*****************************************");
+        }
     }
 }
 
@@ -126,6 +137,12 @@ class SimpleApp
                     CheckBalance();
                     break;
                 case 5:
+                    ViewAccountDetails();
+                    break;
+                case 6:
+                    ListAllAccounts();
+                    break;
+                case 7:
                     Console.WriteLine("\nThank you for using Bank System!");
                     return;
                 default:
@@ -144,8 +161,10 @@ class SimpleApp
             Console.WriteLine("2. Deposit");
             Console.WriteLine("3. Withdraw");
             Console.WriteLine("4. Check Balance");
-            Console.WriteLine("5. Exit");
-            Console.Write("Enter your choice (1-5): ");
+            Console.WriteLine("5. View Account Details");
+            Console.WriteLine("6. List of All Accounts");
+            Console.WriteLine("7. Exit");
+            Console.Write("Enter your choice (1-7): ");
         }
 
         static int GetUserChoice()
@@ -319,6 +338,51 @@ class SimpleApp
             {
                 Console.WriteLine("\nInvalid account number!");
             }
+        }
+
+        static void ViewAccountDetails()
+        {
+            Console.WriteLine("\n===== VIEW ACCOUNT DETAILS =====");
+            Console.Write("Enter account number: ");
+            string input = Console.ReadLine();
+
+            if (int.TryParse(input, out int accountNumber))
+            {
+                BankAccount account = FindAccount(accountNumber);
+                if (account != null)
+                {
+                    account.DisplayAccountDetails();
+                }
+                else
+                {
+                    Console.WriteLine("\nAccount not found!");
+                }
+            }
+            else
+            {
+                Console.WriteLine("\nInvalid account number!");
+            }
+        }
+
+        static void ListAllAccounts()
+        {
+            Console.WriteLine("\n===== LIST OF ALL ACCOUNTS =====");
+
+            if (accountCount == 0)
+            {
+                Console.WriteLine("\nNo accounts found!");
+                return;
+            }
+
+            Console.WriteLine($"{"Account#",-10} {"Name",-20} {"Type",-10} {"Balance",-10}");
+            Console.WriteLine(new string('-', 50));
+
+            for (int i = 0; i < accountCount; i++)
+            {
+                BankAccount account = accounts[i];
+                Console.WriteLine($"{account.AccountNumber,-10} {account.AccountName,-20} {account.AccountType,-10} Php {account.Balance,-10:F2}");
+            }
+
         }
     }
 }
